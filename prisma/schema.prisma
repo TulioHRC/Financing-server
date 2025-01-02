@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Currency {
+  created_at                 DateTime      @default(now())
+  updated_at                 DateTime      @updatedAt
+  deleted_at                 DateTime
+  id                         String        @id @default(uuid())
+  name                       String        @unique
+  quotation_in_BRL           Float
+  investiments               Investiments[]
+  currency_operations_bought CurrencyOperations[] @relation("BoughtCurrency")
+  currency_operations_selled CurrencyOperations[] @relation("SelledCurrency")
+}
+
+model CurrencyOperations {
+  created_at                 DateTime      @default(now())
+  updated_at                 DateTime      @updatedAt
+  deleted_at                 DateTime
+  id                         String        @id @default(uuid())
+  price                      Float        
+  bought_currency            Currency      @relation("BoughtCurrency", fields: [bought_currency_id], references: [id])        
+  bought_currency_id         String
+  selled_currency            Currency      @relation("SelledCurrency", fields: [selled_currency_id], references: [id])        
+  selled_currency_id         String
+  quantity                   Float
+  date                       DateTime  
+}
+
+model Investiments {
+  created_at                 DateTime      @default(now())
+  updated_at                 DateTime      @updatedAt
+  deleted_at                 DateTime
+  id                         String        @id @default(uuid())
+  name                       String        @unique
+  investiment_type           String
+  segment                    String
+  currency                   Currency      @relation(fields: [currency_id], references: [id])        
+  currency_id                String    
+  investiments_prices        InvestimentsPrices?
+  investiments_operations    InvestimentsOperations[]
+  investiments_dividends     InvestimentsDividends[]
+}
+
+model InvestimentsPrices {
+  created_at                 DateTime      @default(now())
+  updated_at                 DateTime      @updatedAt
+  deleted_at                 DateTime
+  investiment                Investiments  @relation(fields: [investiment_id], references: [id])
+  investiment_id             String        @id
+  price                      Float       
+}
+
+model InvestimentsOperations {
+  created_at                 DateTime      @default(now())
+  updated_at                 DateTime      @updatedAt
+  deleted_at                 DateTime
+  id                         String        @id @default(uuid())
+  price                      Float 
+  investiment                Investiments  @relation(fields: [investiment_id], references: [id])
+  investiment_id             String
+  quantity                   Float
+  date                       DateTime
+}
+
+model InvestimentsDividends {
+  created_at                 DateTime      @default(now())
+  updated_at                 DateTime      @updatedAt
+  deleted_at                 DateTime
+  id                         String        @id @default(uuid())
+  investiment                Investiments  @relation(fields: [investiment_id], references: [id])
+  investiment_id             String
+  value                      Float
+  value_after_fees           Float
+  date                       DateTime
+}
