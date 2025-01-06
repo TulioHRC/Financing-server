@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -16,9 +16,16 @@ export class CurrencyService {
   }
 
   async findOne(id: string) {
-    return this.prisma.currency.findUnique({
+    const currency = await this.prisma.currency.findUnique({
       where: { id },
     });
+    console.log(currency);
+
+    if (!currency) {
+      throw new NotFoundException(`Currency with id ${id} not found`);
+    }
+
+    return currency;
   }
 
   async update(id: string, data: { name: string; quotation_in_BRL: number }) {

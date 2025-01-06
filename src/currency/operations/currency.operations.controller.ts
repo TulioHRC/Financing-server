@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { CurrencyOperationsService } from './currency.operations.service';
 
-@Controller('currency/operations')
+@Controller('currency-operations')
 export class CurrencyOpeartionsController {
   constructor(
     private readonly currencyOperationsService: CurrencyOperationsService,

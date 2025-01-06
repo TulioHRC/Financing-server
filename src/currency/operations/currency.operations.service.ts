@@ -20,9 +20,6 @@ export class CurrencyOperationsService {
   }
 
   async findAll() {
-    console.log("trying to find all currency operations");
-    const currencyOperations = await this.prisma.currencyOperations.findMany();
-    console.log(currencyOperations)
     return await this.prisma.currencyOperations.findMany();
   }
 
