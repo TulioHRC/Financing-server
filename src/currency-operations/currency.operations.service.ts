@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class CurrencyOperationsService {
@@ -39,6 +39,8 @@ export class CurrencyOperationsService {
       date?: Date;
     },
   ) {
+    data.date = new Date(data.date);
+
     return this.prisma.currencyOperations.update({
       where: { id },
       data,

@@ -19,7 +19,6 @@ export class CurrencyService {
     const currency = await this.prisma.currency.findUnique({
       where: { id },
     });
-    console.log(currency);
 
     if (!currency) {
       throw new NotFoundException(`Currency with id ${id} not found`);
