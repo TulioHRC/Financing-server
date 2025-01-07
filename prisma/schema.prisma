@@ -10,7 +10,7 @@ datasource db {
 model Currency {
   created_at                 DateTime      @default(now())
   updated_at                 DateTime      @updatedAt
-  deleted_at                 DateTime
+  deleted_at                 DateTime?
   id                         String        @id @default(uuid())
   name                       String        @unique
   quotation_in_BRL           Float
@@ -22,7 +22,7 @@ model Currency {
 model CurrencyOperations {
   created_at                 DateTime      @default(now())
   updated_at                 DateTime      @updatedAt
-  deleted_at                 DateTime
+  deleted_at                 DateTime?
   id                         String        @id @default(uuid())
   price                      Float        
   bought_currency            Currency      @relation("BoughtCurrency", fields: [bought_currency_id], references: [id])        
@@ -36,7 +36,7 @@ model CurrencyOperations {
 model Investiments {
   created_at                 DateTime      @default(now())
   updated_at                 DateTime      @updatedAt
-  deleted_at                 DateTime
+  deleted_at                 DateTime?
   id                         String        @id @default(uuid())
   name                       String        @unique
   investiment_type           String
@@ -51,7 +51,7 @@ model Investiments {
 model InvestimentsPrices {
   created_at                 DateTime      @default(now())
   updated_at                 DateTime      @updatedAt
-  deleted_at                 DateTime
+  deleted_at                 DateTime?
   investiment                Investiments  @relation(fields: [investiment_id], references: [id])
   investiment_id             String        @id
   price                      Float       
@@ -60,7 +60,7 @@ model InvestimentsPrices {
 model InvestimentsOperations {
   created_at                 DateTime      @default(now())
   updated_at                 DateTime      @updatedAt
-  deleted_at                 DateTime
+  deleted_at                 DateTime?
   id                         String        @id @default(uuid())
   price                      Float 
   investiment                Investiments  @relation(fields: [investiment_id], references: [id])
@@ -72,7 +72,7 @@ model InvestimentsOperations {
 model InvestimentsDividends {
   created_at                 DateTime      @default(now())
   updated_at                 DateTime      @updatedAt
-  deleted_at                 DateTime
+  deleted_at                 DateTime?
   id                         String        @id @default(uuid())
   investiment                Investiments  @relation(fields: [investiment_id], references: [id])
   investiment_id             String
