@@ -3,6 +3,7 @@ import { CurrencyModule } from './currency/currency.module';
 import { CurrencyOpeartionsModule } from './currency-operations/currency.operations.module';
 import { InvestimentsModule } from './investiments/investiments.module';
 import { DividendsModule } from './dividends/dividends.module';
+import { OperationsModule } from './operations/operations.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { DividendsModule } from './dividends/dividends.module';
     CurrencyOpeartionsModule,
     InvestimentsModule,
     DividendsModule,
+    OperationsModule,
   ],
   controllers: [],
   providers: [],
