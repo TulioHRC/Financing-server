@@ -3,7 +3,7 @@ import {
   Catch,
   ArgumentsHost,
   HttpException,
-  HttpStatus
+  HttpStatus,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { NestFactory } from '@nestjs/core';
@@ -42,6 +42,7 @@ export class NotFoundFilter implements ExceptionFilter {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
   app.useGlobalFilters(new NotFoundFilter());
   await app.listen(process.env.PORT ?? 3000);
   console.log(`Listening on port ${process.env.PORT ?? 3000}`);
