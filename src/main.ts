@@ -31,6 +31,7 @@ export class NotFoundFilter implements ExceptionFilter {
         path: request.url,
       });
     } else {
+      console.log(exception);
       response.status(status).json({
         statusCode: status,
         message: exception.response?.message || 'Internal server error',

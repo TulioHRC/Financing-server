@@ -6,6 +6,9 @@ export class PricesService {
   constructor(private prisma: PrismaService) {}
 
   async create(data: { price: number; investiment_id: string }) {
+    if (this.findOne(data.investiment_id)) {
+      throw new Error('Investment already exists');
+    }
     return this.prisma.investimentsPrices.create({
       data,
     });

@@ -29,21 +29,20 @@ export class PricesController {
     return this.pricesService.findAll();
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.pricesService.findOne(id);
+  @Get(':investiment_id')
+  async findOne(@Param('investiment_id') investiment_id: string) {
+    return this.pricesService.findOne(investiment_id);
   }
 
-  @Put(':id')
+  @Put(':investiment_id')
   async update(
-    @Param('id') id: string,
+    @Param('investiment_id') investiment_id: string,
     @Body()
     body: {
       price: number;
-      investiment_id: string;
     },
   ) {
-    return this.pricesService.update(id, body);
+    return this.pricesService.update(investiment_id, body);
   }
 
   @Delete(':id')
