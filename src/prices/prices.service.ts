@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -6,8 +6,9 @@ export class PricesService {
   constructor(private prisma: PrismaService) {}
 
   async create(data: { price: number; investiment_id: string }) {
-    if (this.findOne(data.investiment_id)) {
-      throw new Error('Investment already exists');
+    if ((await this.findOne(data.investiment_id)) !== null) {
+      console.log('Investiment already exists, running PUT');
+      return this.update(data.investiment_id, { price: data.price });
     }
     return this.prisma.investimentsPrices.create({
       data,
@@ -24,8 +25,7 @@ export class PricesService {
     });
 
     if (!prices) {
-      throw new NotFoundException(`
-        Investiment with id ${investiment_id} not found`);
+      return null;
     }
 
     return prices;
