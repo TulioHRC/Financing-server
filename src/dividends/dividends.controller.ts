@@ -21,6 +21,7 @@ export class DividendsController {
       value_after_fees: number;
       date: Date;
       investiment_id: string;
+      investiment_quantity: number;
     },
   ) {
     return this.dividendsService.create(body);

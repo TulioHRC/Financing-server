@@ -10,6 +10,7 @@ export class DividendsService {
     value_after_fees: number;
     date: Date;
     investiment_id: string;
+    investiment_quantity: number;
   }) {
     data.date = new Date(data.date);
 
