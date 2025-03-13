@@ -79,4 +79,5 @@ model InvestimentsDividends {
   value                      Float
   value_after_fees           Float
   date                       DateTime
+  investiment_quantity       Float
 }
