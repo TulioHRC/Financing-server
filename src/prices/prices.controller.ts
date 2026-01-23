@@ -6,6 +6,7 @@ import {
   Param,
   Put,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { PricesService } from './prices.service';
 
@@ -27,6 +28,11 @@ export class PricesController {
   @Get()
   async findAll() {
     return this.pricesService.findAll();
+  }
+
+  @Get('external-api')
+  async getFromExternalApi(@Query('investimentId') investimentId: string) {
+    return this.pricesService.getFromExternalApi(investimentId);
   }
 
   @Get(':investiment_id')

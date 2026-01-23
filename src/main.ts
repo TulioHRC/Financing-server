@@ -9,6 +9,7 @@ import { Request, Response } from 'express';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { config } from 'dotenv';
+import { ExpressAdapter } from '@nestjs/platform-express';
 
 config();
 
@@ -42,7 +43,10 @@ export class NotFoundFilter implements ExceptionFilter {
 }
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, new ExpressAdapter(), {
+    cors: true,
+    logger: ['error', 'warn', 'log'],
+  });
   app.enableCors();
   app.useGlobalFilters(new NotFoundFilter());
   await app.listen(process.env.PORT ?? 3000);

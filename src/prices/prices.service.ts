@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import axios from 'axios';
 
 @Injectable()
 export class PricesService {
@@ -47,5 +48,35 @@ export class PricesService {
     return this.prisma.investimentsPrices.delete({
       where: { investiment_id },
     });
+  }
+
+  async getFromExternalApi(
+    investimentId: string,
+  ): Promise<{ value: number; isNewPrice: boolean }> {
+    const [actualPrice, investiment] = await Promise.all([
+      this.findOne(investimentId),
+      this.prisma.investiments.findUnique({
+        where: { id: investimentId },
+      }),
+    ]);
+
+    if (!investiment) throw new Error('Not found investiment!');
+
+    try {
+      const externalData = await axios.get(
+        `${process.env.BRAPI_BASE_URL}/quote/${investiment.name}`,
+        { headers: { Authorization: `Bearer ${process.env.BRAPI_TOKEN}` } },
+      );
+
+      return {
+        value: externalData.data['results'][0]['regularMarketPrice'],
+        isNewPrice: true,
+      };
+    } catch {
+      return {
+        value: actualPrice.price ?? 0,
+        isNewPrice: false,
+      };
+    }
   }
 }
