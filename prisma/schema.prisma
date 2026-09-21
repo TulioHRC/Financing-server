@@ -41,11 +41,79 @@ model Investiments {
   name                       String        @unique
   investiment_type           String
   segment                    String
-  currency                   Currency      @relation(fields: [currency_id], references: [id])        
-  currency_id                String    
+  currency                   Currency      @relation(fields: [currency_id], references: [id])
+  currency_id                String
   investiments_prices        InvestimentsPrices?
   investiments_operations    InvestimentsOperations[]
   investiments_dividends     InvestimentsDividends[]
+  watchlist_asset            WatchlistAssets?
+}
+
+enum AnalysisCategory {
+  PROFITABILITY
+  DEBT
+  GROWTH
+  GOVERNANCE
+  PRICE
+  DIVIDENDS
+}
+
+enum AssetVerdict {
+  BUY
+  WAIT
+  AVOID
+}
+
+model WatchlistAssets {
+  created_at                 DateTime      @default(now())
+  updated_at                 DateTime      @updatedAt
+  deleted_at                 DateTime?
+  id                         String        @id @default(uuid())
+  name                       String
+  asset_type                 String
+  segment                    String?
+  description                String?
+  investiment                Investiments? @relation(fields: [investiment_id], references: [id])
+  investiment_id             String?       @unique
+  analyses                   AssetAnalyses[]
+}
+
+model AssetAnalyses {
+  created_at                 DateTime      @default(now())
+  updated_at                 DateTime      @updatedAt
+  deleted_at                 DateTime?
+  id                         String        @id @default(uuid())
+  watchlist_asset            WatchlistAssets @relation(fields: [watchlist_asset_id], references: [id], onDelete: Cascade)
+  watchlist_asset_id         String
+  date                       DateTime
+  observations               String?
+  verdict                    AssetVerdict?
+  categories                 AssetAnalysisCategories[]
+}
+
+model AssetAnalysisCategories {
+  created_at                 DateTime      @default(now())
+  updated_at                 DateTime      @updatedAt
+  id                         String        @id @default(uuid())
+  asset_analysis             AssetAnalyses @relation(fields: [asset_analysis_id], references: [id], onDelete: Cascade)
+  asset_analysis_id          String
+  category                   AnalysisCategory
+  score                      Int
+  comment                    String
+  indicators                 AssetAnalysisIndicators[]
+
+  @@unique([asset_analysis_id, category])
+}
+
+model AssetAnalysisIndicators {
+  created_at                 DateTime                @default(now())
+  updated_at                 DateTime                @updatedAt
+  id                         String                  @id @default(uuid())
+  category                   AssetAnalysisCategories @relation(fields: [asset_analysis_category_id], references: [id], onDelete: Cascade)
+  asset_analysis_category_id String
+  name                       String
+  value                      Float
+  unit                       String?
 }
 
 model InvestimentsPrices {

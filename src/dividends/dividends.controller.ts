@@ -32,6 +32,11 @@ export class DividendsController {
     return this.dividendsService.findAll();
   }
 
+  @Get('summary')
+  async getSummary() {
+    return this.dividendsService.getSummary();
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.dividendsService.findOne(id);

@@ -31,6 +31,16 @@ export class InvestimentsController {
     return this.investimentsService.findAll();
   }
 
+  @Get('performance')
+  async getPerformance() {
+    return this.investimentsService.getPerformance();
+  }
+
+  @Get('currency-exposure')
+  async getCurrencyExposure() {
+    return this.investimentsService.getCurrencyExposure();
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.investimentsService.findOne(id);

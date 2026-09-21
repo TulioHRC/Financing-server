@@ -31,6 +31,11 @@ export class OperationsController {
     return this.operationsService.findAll();
   }
 
+  @Get('monthly-flow')
+  async getMonthlyFlow() {
+    return this.operationsService.getMonthlyFlow();
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.operationsService.findOne(id);
